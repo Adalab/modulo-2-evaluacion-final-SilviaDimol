@@ -1,0 +1,39 @@
+body {
+    background-color: black;
+    padding: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: left;
+}
+
+h1 {
+    color: turquoise;
+}
+
+.form__button {
+    color: white;
+    background-color: turquoise;
+    border-radius: 15%;
+    border-style: solid;
+    border-color: turquoise;
+}
+
+.reset__button {
+    color: white;
+    background-color: turquoise;
+    border-radius: 15%;
+    border-style: solid;
+    border-color: turquoise;
+}
+
+.js_formInput {
+    background-color: black;
+    border-radius: 15%;
+    border-style: solid;
+    border-color: turquoise;
+}
+
+h2 {
+    color: pink;
+}
