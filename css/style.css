@@ -29,6 +29,7 @@ h1 {
 
 .js_formInput {
     background-color: black;
+    color: white;
     border-radius: 15%;
     border-style: solid;
     border-color: turquoise;
