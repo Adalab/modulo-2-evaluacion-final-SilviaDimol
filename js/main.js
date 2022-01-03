@@ -2,210 +2,88 @@
 
 // CONSTANTES
 // Input, donde meten la búsqueda
-const searchText = document.querySelector(".js_formInput");
+const searchInput = document.querySelector(".js-formInput");
 // Botón de buscar
-const searchButton = document.querySelector(".js-formButton");
+const searchButton = document.querySelector(".js-searchButton");
 // Botón de reset
 const resetButton = document.querySelector("js-resetButton");
 // Donde se pintan las series
-const seriesList = document.querySelector(".js-searchResult");
+const seriesList = document.querySelector(".js-seriesList");
 // Zona de búsqueda, el form
 const requestPanel = document.querySelector(".js-form");
 // Donde se pintan las favoritas
 const listFav = document.querySelector(".js-favListCompleted");
 
+// VARIABLES GLOBALES
+let allData;
 
-// VARIABLES
-let series = [];
-let favorites = [];
+// EVENTO INPUT Y BOTÓN DE BUSCAR
+searchButton.addEventListener('click', apiRequest);
 
-
-// AL ARRANCAR LA PÁGINA
-getFromLocalStorage();
-
-function handleSearch() {
-  apiRequest(searchText.value);
-}
-
-//Obtener los datos de la API
-function apiRequest() {
-  return fetch(`https://api.tvmaze.com/search/shows?q=${searchText.value}`)
+// OBTENER SERIES DEL API
+function apiRequest(event) {
+  event.preventDefault();
+  fetch(`https://api.jikan.moe/v3/search/anime?q=${searchInput.value}`)
     .then((response) => response.json())
     .then((data) => {
-      for (let i = 0; i < data.length; i++) {
-        const series = data[i];
-        series.push(show);
-      }
-      paintSeries();
-    })
-    .catch((error) => {
-      console.log(error);
+      allData = data.results;
+      paintSeries(allData);
     });
-}
-  
+  }
+    
 
 // PINTAR LAS SERIES
-function paintSeries() {
-    // Lo que vamos a rellenar
-    seriesList.innerHTML = "";
-    let html = "";
-    let favClass = "";
-    // Bucle: que recorra las series del API
-    for (const serie of series) {
-      const isFav = isFavorite(serie);
-      if (isFav) {
-        favClass = "serie--favorite";
-      } else {
-        favClass = "";
-      }
-      html = `<li id=${serie.id} class= "searchResult_elem js-searchResult_elem ${favClass}">`;
-      // Si la serie no tiene imagen
-      if (null === serie.image) {
-        html += `<img class="searchResult_elem-img" 
-          src="https://via.placeholder.com/210x295/ffffff/666666/?text=TV" 
-          title=${serie.name} alt=${serie.name}/>`;
-      } else {
-          // Si tiene, que se muestre su imagen correspondiente
-        html += `<img class="searchResult_elem-img"
-          src=${serie.image.medium}
-          title=${serie.name} alt=${serie.name}/>`;
-      }
-      // Que se muestre el título
-      html += `<h3>${serie.name}</h3>`;
-      html += `</li>`;
-      seriesList.innerHTML += html;
-      listenClickSeries();
-    }
-  }
-
-// ???
-function isFavorite(idSerie) {
-    // el find devolverá undefined si la serie no está en el array de favoritas
-    const favoriteFound = favorites.find((idFavorite) => {
-        // el return dirá si la serie está o no en favoritas
-      return idFavorite.id === idSerie.id;
-    });
-    if (favoriteFound === undefined) {
-      // return dirá false cuando la serie no esté en favoritas
-      return false;
-    } else {
-      // return dirá true cuando la serie sí esté en favoritas
-      return true;
-    }
-  }
-
-// ESCUCHAR EVENTOS EN LAS SERIES
-function listenClickSeries() {
-    const seriesCards = document.querySelectorAll(".js-searchResult_elem");
-    for (const serieCard of seriesCards)
-      serieCard.addEventListener("click", addFavorites);
-  }
-
-
-  // AÑADIR SERIE A FAVORITAS
-function addFavorites(ev) {
-    // Sacar id de la serie seleccionada
-    const serieSelected = parseInt(ev.currentTarget.id);
-    // Encontrar el id de la serie seleccionada entre las id de favoritas
-    const serieClicked = series.find((idSerie) => {
-      return idSerie.id === serieSelected;
-    });
-    const favAlready = favorites.findIndex((idFavorite) => {
-      return idFavorite.id === serieSelected;
-    });
-  // Agregar serie
-    if (favAlready === -1) {
-      favorites.push(serieClicked);
-    } else {
-      favorites.splice(favAlready, 1);
-    }
-    paintSeries();
-    paintFavorites();
-    updateLocalStorage();
-  }
-
-// PINTAR LAS SERIES FAVORITAS
-function paintFavorites() {
-    // Lo que vamos a rellenar
-    listFav.innerHTML = "";
-    let htmlFav = "";
-   // Bucle: que recorra las series de favoritas
-    for (const serie of favorites) {
-      htmlFav = `<li id=${serie.id} class="fav_section-list js-favSectionList">`;
-      htmlFav += `<button id="${serie.id}" class="js-deleteCross fav_elem-delete ">x</button>`;
-      // Si la serie favorita no tiene imagen
-      if (null === serie.image) {
-        htmlFav += `<img class="fav_elem-img"
-            src="https://via.placeholder.com/210x295/ffffff/666666/?text=TV" 
-            title=${serie.name} alt=${serie.name}/>`;
-      } else {
-          // Si la serie favorita tiene imagen
-        htmlFav += `<img class="fav_elem-img"
-            src=${serie.image.medium}
-            title=${serie.name} alt=${serie.name}/>`;
-      }
-      htmlFav += `<h4 class="fav_elem-serieTitle"> ${serie.name}</h4>`;
-      htmlFav += `</li>`;
-      listFav.innerHTML += htmlFav;
-  
-      listenClickedFavorites();
-    }
-  }
-
-  // ESCUCHAR EVENTOS EN LAS SERIES FAVORITAS
-function listenClickedFavorites() {
-    const favCards = document.querySelectorAll(".js-deleteCross");
-    for (const favCard of favCards) favCard.addEventListener("click", deleteFav);
-  }
-  
-  // ELIMINAR SERIE DE FAVORITAS
-  function deleteFav(ev) {
-    const favClicked = parseInt(ev.currentTarget.id);
-    const favSelected = favorites.findIndex((idFav) => idFav.id === favClicked);
-    favorites.splice(favSelected, 1);
-    paintSeries();
-    paintFavorites();
-    updateLocalStorage();
-  }
-  
-  function favHidden() {
-    const favSection = document.querySelector(".js-favArea");
-    if ((favSection.innerHTML = "")) {
-      favSection.classList.add("js-hidden");
-    } else {
-      favSection.classList.remove("js-hidden");
-    }
-  }
-  
-  // preventDefault para evitar que la página se recargue involuntariamente
-function handleForm(ev) {
-    ev.preventDefault();
-  }
-  
-  // Local storage
-function updateLocalStorage() {
-  localStorage.setItem('favorites', JSON.stringify(favorites));
-}
-
-function getFromLocalStorage() {
-  favorites = JSON.parse(localStorage.getItem('favorites')) ?? [];
-  paintFavorites();
-}
-
-// Hacer reset
-function resetFavorites() {
-  favorites = [];
-  updateLocalStorage();
-  paintFavorites();;
-  for (const series of seriesList) {
-    seriesList.classList.remove('selected');
+function paintSeries(seriesData) {
+  //Para limpiar y que no se sume una búsqueda a otra
+  seriesList.innerHTML = '';
+   // Por si el array que guarda los datos no existe, creamos uno vacío para que no de error el bucle que tiene que recorrer eses array que no existiría
+  if (seriesData === null) {
+     seriesData = [];}
+     else {
+   // Para recorrer el array con todos los datos, creo un bucle for of (DOM)
+   for (const eachSerie of seriesData) {
+    const serie = document.createElement('li');
+    const serieTitle = document.createTextNode(eachSerie.title);
+    const serieImage = document.createElement('img');
+    serieImage.setAttribute('src', eachSerie.image_url);
+    // Ahora le digo qué lugar quiero que ocupen en el html (hijos de)
+    seriesList.appendChild(serie);
+    serie.appendChild(serieTitle);
+    serie.appendChild(serieImage);
+    // Añadir atributos al li para guardarlo en el local storage
+    serie.setAttribute('data-id', eachSerie.mal_id);
+    serie.setAttribute('data-title', eachSerie.title);
+    serie.setAttribute('data-image', eachSerie.image_url);
+    // Aqui le añado una clase al li para poder darle estilos en css
+    serie.classList.add('serie');
+    // Evento para mandar series al local storage
+    serie.addEventListener('click', addFavorite);
+   }
   }
 }
 
-  // LISTENERS PRINCIPALES
-  // Cuando se pulsa el botón de buscar:
-  searchButton.addEventListener("click", handleSearch);
-  // Cuando se pulsa sobre alguna serie:
-  requestPanel.addEventListener("submit", handleForm);
-  //Cuando se pulsa sobre el botón de reset: 
-  resetButton.addEventListener('click', resetFavorites);
+// Array donde se van a guardar los datos de mi favoritos (local storage)
+let allDataFavorites = JSON.parse(localStorage.getItem('seriesInLocal'));
+if (allDataFavorites === null) {
+  allDataFavorites = [];
+}
+
+// Función para guardar los favoritos en el local storage
+function addFavorite(event) {
+  //Con push metemos un elemento en el array, y en el array vacío AllDataFavorites, lo que vamos a guardar son esos atributos que le dimos al li: id, title e image (para poder pintarlo luego). Con event.currenttarget haces referencia a la serie concreta donde estás clicando, así guardar el dat.set de eso
+  allDataFavorites.push(event.currentTarget.dataset);
+  // Ahora, esos datos que has guardado en el array, se los mandas al local storage
+  localStorage.setItem('seriesInLocal', JSON.stringify(allDataFavorites));
+  // Voy añadirle una clase para luego poder subrayarlo con css, en plan seleccionada
+  event.currentTarget.classList.add('favoriteSerie');
+  // Para que me pinte también las series favos
+  paintFavoriteSeries(allDataSeries)
+  
+}
+// Ahora tocaría pintar lo que he guardado en el local, que son las series favoritas, sería igual que la función d epaintSeries pero en vez de con el array que te trae el fect, con allDataFavorites (que es donde guardado los datos de las fav). Habrá que dar nombres nuevos en plan eachFavSerie. ¡! fijarme que en el ul donde lo guardas, sea el de mis favoritas y no el de resultados. 
+
+// Para el reset, location.reload (dentro de una función que te inventes, que a su vez responde al listener del botón reset).
+
+//Reset para mis favoritas
+
+// Añadir otro listener para el botón borrar favoritas, mismo proceso.
