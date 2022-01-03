@@ -8,7 +8,7 @@ const searchButton = document.querySelector(".js-formButton");
 // Botón de reset
 const resetButton = document.querySelector("js-resetButton");
 // Donde se pintan las series
-const listSeries = document.querySelector(".js-searchResult");
+const seriesList = document.querySelector(".js-searchResult");
 // Zona de búsqueda, el form
 const requestPanel = document.querySelector(".js-form");
 // Donde se pintan las favoritas
@@ -21,30 +21,33 @@ let favorites = [];
 
 
 // AL ARRANCAR LA PÁGINA
+getFromLocalStorage();
+
 function handleSearch() {
   apiRequest(searchText.value);
 }
 
-// OBTENER LAS SERIES DEL API
-function apiRequest(userSearch) {
-    fetch("//api.jikan.moe/v3/search/anime?q=naruto" + userSearch) 
-      .then(response => response.json()) 
-      .then(data => {
-          console.log(data);
-        const seriesList = data;
-        // 3º GUARDAR LAS SERIES EN UN ARRAY
-        series = [];
-        for (const serie of seriesList) {
-          series.push(serie.show);
-        }
-        paintSeries();
-      });
-    }
+//Obtener los datos de la API
+function apiRequest() {
+  return fetch(`https://api.tvmaze.com/search/shows?q=${searchText.value}`)
+    .then((response) => response.json())
+    .then((data) => {
+      for (let i = 0; i < data.length; i++) {
+        const series = data[i];
+        series.push(show);
+      }
+      paintSeries();
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+  
 
 // PINTAR LAS SERIES
 function paintSeries() {
     // Lo que vamos a rellenar
-    listSeries.innerHTML = "";
+    seriesList.innerHTML = "";
     let html = "";
     let favClass = "";
     // Bucle: que recorra las series del API
@@ -70,7 +73,7 @@ function paintSeries() {
       // Que se muestre el título
       html += `<h3>${serie.name}</h3>`;
       html += `</li>`;
-      listSeries.innerHTML += html;
+      seriesList.innerHTML += html;
       listenClickSeries();
     }
   }
@@ -99,7 +102,7 @@ function listenClickSeries() {
   }
 
 
-  // ???
+  // AÑADIR SERIE A FAVORITAS
 function addFavorites(ev) {
     // Sacar id de la serie seleccionada
     const serieSelected = parseInt(ev.currentTarget.id);
@@ -118,6 +121,7 @@ function addFavorites(ev) {
     }
     paintSeries();
     paintFavorites();
+    updateLocalStorage();
   }
 
 // PINTAR LAS SERIES FAVORITAS
@@ -154,12 +158,14 @@ function listenClickedFavorites() {
     for (const favCard of favCards) favCard.addEventListener("click", deleteFav);
   }
   
+  // ELIMINAR SERIE DE FAVORITAS
   function deleteFav(ev) {
     const favClicked = parseInt(ev.currentTarget.id);
     const favSelected = favorites.findIndex((idFav) => idFav.id === favClicked);
     favorites.splice(favSelected, 1);
     paintSeries();
     paintFavorites();
+    updateLocalStorage();
   }
   
   function favHidden() {
@@ -171,16 +177,35 @@ function listenClickedFavorites() {
     }
   }
   
-  // // preventDefault para evitar que la página se recargue involuntariamente
+  // preventDefault para evitar que la página se recargue involuntariamente
 function handleForm(ev) {
     ev.preventDefault();
   }
   
-  // EVENTOS 
+  // Local storage
+function updateLocalStorage() {
+  localStorage.setItem('favorites', JSON.stringify(favorites));
+}
+
+function getFromLocalStorage() {
+  favorites = JSON.parse(localStorage.getItem('favorites')) ?? [];
+  paintFavorites();
+}
+
+// Hacer reset
+function resetFavorites() {
+  favorites = [];
+  updateLocalStorage();
+  paintFavorites();;
+  for (const series of seriesList) {
+    seriesList.classList.remove('selected');
+  }
+}
+
+  // LISTENERS PRINCIPALES
   // Cuando se pulsa el botón de buscar:
   searchButton.addEventListener("click", handleSearch);
   // Cuando se pulsa sobre alguna serie:
   requestPanel.addEventListener("submit", handleForm);
-  //Cuando se pulsa sobre el botón de reset: resetButton.addEventListener("click", handleReset);
-
-  //FALTA LO DEL LOCALSTORAGE!!!: guardar favoritas en el localstorage y borrarlas con el botón de reset.
+  //Cuando se pulsa sobre el botón de reset: 
+  resetButton.addEventListener('click', resetFavorites);
