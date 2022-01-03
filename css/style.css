@@ -3,36 +3,75 @@ body {
     padding: 100px;
     display: flex;
     flex-direction: column;
-    justify-content: left;
-    align-items: left;
+    justify-content: center;
+    align-items: center;
 }
 
-h1 {
+main {
+    background-color: black;
+    padding: 100px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: left;
+
+}
+
+.mainTitle {
     color: turquoise;
 }
 
-.form__button {
+.favoriteSeriesContainer {
+    border-color: pink;
+    border-style: solid;
+    border-radius: 10px;
+    background-color: black;
+    padding: 100px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.ResultsContainer {
+    border-color: white;
+    border-style: solid;
+    border-radius: 10px;
+    background-color: black;
+    padding: 100px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+}
+
+.searchButton {
     color: white;
     background-color: turquoise;
-    border-radius: 15%;
+    border-radius: 10%;
     border-style: solid;
     border-color: turquoise;
 }
 
-.reset__button {
+.resetButton {
     color: white;
     background-color: turquoise;
-    border-radius: 15%;
+    border-radius: 10%;
     border-style: solid;
     border-color: turquoise;
 }
 
-.js_formInput {
+.formInput {
     background-color: black;
     color: white;
-    border-radius: 15%;
+    border-radius: 10%;
     border-style: solid;
     border-color: turquoise;
+}
+
+.resetFavoritesButton {
+    background-color: black;
+    font-size: 30px;
+    border-color: black;
 }
 
 h2 {

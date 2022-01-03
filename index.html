@@ -4,43 +4,36 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/style.css" />
     <title>Buscador de series de anime</title>
   </head>
 
   <body>
-    <main class="page__main">
-        <h1 class="page__header--title">
-            <span><i class="fas fa-video"> </i></span> Buscador de series de anime
-          </h1>
+    <header class="header">
+      <h1 class="mainTitle">Buscador de series de anime</h1>
       <form class="js-form" method="GET">
         <input
-          class="js-formInput form__input"
+          class="js-formInput formInput"
           type="text"
           name="search"
           id="search"
           placeholder="Nombre de la serie"
         />
-        <button class="js-searchButton form__button">Buscar</button>
-        <button class="js-resetButton reset__button">Borrar</button>
+        <button class="js-searchButton searchButton">Buscar</button>
+        <button class="js-resetButton resetButton">Borrar</button>
       </form>
-      <div class="series_container">
-        <section class="searchResult-container">
-          <ul class="seriesList js-seriesList"></ul>
-        </section>
-        <section class="fav_section js-favSection">
-          <h2 class="fav_section-title js-favSectionTitle">
-            Series favoritas
-          </h2>
-          <button class="js-resetButtonFavorites reset__button_favorites">Borrar favoritas</button>
-          <ul class="js-favListCompleted fav_list-completed">
-          </ul>
-
-        </section>
-        <h2></h2>
-      </div>
+    </header>
+    <main class="main">
+      <section class="favoriteSeriesContainer">
+        <h2 class="js-favoritesTitle">Series favoritas</h2>
+        <button class="js-resetFavoritesButton resetFavoritesButton">🗑️</button>
+        <ul class="js-favoriteSeriesList seriesList"></ul>
+      </section>
+      <section class="ResultsContainer">
+        <h2 class="js-resultsTitle resultsTitle">Resultados</h2>
+        <ul class="js-seriesList favoriteSeriesList"></ul>
+      </section>
     </main>
-    <footer class="page__footer"></footer>
     <script type="text/javascript" src="./js/main.js"></script>
   </body>
 </html>

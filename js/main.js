@@ -5,19 +5,21 @@
 const searchInput = document.querySelector(".js-formInput");
 // Botón de buscar
 const searchButton = document.querySelector(".js-searchButton");
-// Botón de reset
-const resetButton = document.querySelector("js-resetButton");
+// Botón de reset del input
+const resetButton = document.querySelector(".js-resetButton");
+// Botón de reset de favoritas
+const resetFavoritesButton = document.querySelector(".js-resetFavoritesButton");
 // Donde se pintan las series
 const seriesList = document.querySelector(".js-seriesList");
-// Zona de búsqueda, el form
+// Zona de búsqueda, el form,------------------------------------------------------ ESTO LO VOY A USAR?
 const requestPanel = document.querySelector(".js-form");
 // Donde se pintan las favoritas
-const listFav = document.querySelector(".js-favListCompleted");
+const favoriteSeriesList = document.querySelector(".js-favoriteSeriesList");
 
 // VARIABLES GLOBALES
 let allData;
 
-// EVENTO INPUT Y BOTÓN DE BUSCAR
+// BOTÓN DE BUSCAR
 searchButton.addEventListener('click', apiRequest);
 
 // OBTENER SERIES DEL API
@@ -36,7 +38,7 @@ function apiRequest(event) {
 function paintSeries(seriesData) {
   //Para limpiar y que no se sume una búsqueda a otra
   seriesList.innerHTML = '';
-   // Por si el array que guarda los datos no existe, creamos uno vacío para que no de error el bucle que tiene que recorrer eses array que no existiría
+   // Por si el array que guarda los datos no existe, creamos uno vacío para que no de error el bucle 
   if (seriesData === null) {
      seriesData = [];}
      else {
@@ -62,28 +64,55 @@ function paintSeries(seriesData) {
   }
 }
 
+// LOCAL STORAGE
 // Array donde se van a guardar los datos de mi favoritos (local storage)
-let allDataFavorites = JSON.parse(localStorage.getItem('seriesInLocal'));
+let allDataFavorites = JSON.parse(localStorage.getItem('allDataFavorites'));
 if (allDataFavorites === null) {
   allDataFavorites = [];
 }
-
 // Función para guardar los favoritos en el local storage
 function addFavorite(event) {
   //Con push metemos un elemento en el array, y en el array vacío AllDataFavorites, lo que vamos a guardar son esos atributos que le dimos al li: id, title e image (para poder pintarlo luego). Con event.currenttarget haces referencia a la serie concreta donde estás clicando, así guardar el dat.set de eso
   allDataFavorites.push(event.currentTarget.dataset);
   // Ahora, esos datos que has guardado en el array, se los mandas al local storage
-  localStorage.setItem('seriesInLocal', JSON.stringify(allDataFavorites));
+  console.log(event.currentTarget);
+  localStorage.setItem('allDataFavorites', JSON.stringify(allDataFavorites));
   // Voy añadirle una clase para luego poder subrayarlo con css, en plan seleccionada
-  event.currentTarget.classList.add('favoriteSerie');
+  event.currentTarget.classList.add('selectedFavoriteSerie');
   // Para que me pinte también las series favos
-  paintFavoriteSeries(allDataSeries)
-  
+  paintFavoriteSeries(allDataFavorites);
 }
-// Ahora tocaría pintar lo que he guardado en el local, que son las series favoritas, sería igual que la función d epaintSeries pero en vez de con el array que te trae el fect, con allDataFavorites (que es donde guardado los datos de las fav). Habrá que dar nombres nuevos en plan eachFavSerie. ¡! fijarme que en el ul donde lo guardas, sea el de mis favoritas y no el de resultados. 
 
-// Para el reset, location.reload (dentro de una función que te inventes, que a su vez responde al listener del botón reset).
+paintFavoriteSeries(allDataFavorites);
+// PINTAR LAS SERIES FAVORITAS
+function paintFavoriteSeries(allDataFavorites) {
+  favoriteSeriesList.innerHTML = '';
+   // Para recorrer el array con todos los datos, creo un bucle for of (DOM)
+   for (const eachFavoriteSerie of allDataFavorites) {
+    const favoriteSerie = document.createElement('li');
+    const favoriteSerieTitle = document.createTextNode(eachFavoriteSerie.title);
+    const favoriteSerieImage = document.createElement('img');
+    favoriteSerieImage.setAttribute('src', eachFavoriteSerie.image);
+    // Ahora le digo qué lugar quiero que ocupen en el html (hijos de)
+    favoriteSeriesList.appendChild(favoriteSerie);
+    favoriteSerie.appendChild(favoriteSerieTitle);
+    favoriteSerie.appendChild(favoriteSerieImage);
+    // Aqui le añado una clase al li para poder darle estilos en css
+    serie.classList.add('favoriteSerie');
+   }
+  }
 
-//Reset para mis favoritas
+// BOTÓN BORRAR (borrar búsqueda)
+resetButton.addEventListener('click', deleteInput);
+function deleteInput() {
+  location.reload();
+}
 
-// Añadir otro listener para el botón borrar favoritas, mismo proceso.
+// BOTÓN PAPELERA (borrar favoritas)
+resetFavoritesButton.addEventListener('click', deleteFavorites);
+function deleteFavorites() {
+  localStorage.setItem('allDataFavorites', '[]');
+  allDataFavorites = [];
+  favoriteSeriesList.innerHTML ='';
+
+}
