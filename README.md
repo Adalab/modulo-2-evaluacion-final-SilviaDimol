@@ -10,4 +10,4 @@ Dentro del archivo main.js podréis encontrar comentados los pasos más importan
 - Pintar las series encontradas.
 - Pintar las series seleccionadas como favoritas.
 - Local storage.
-- Botón de borrar (reset).
+- Botón de borrar.
