@@ -1,6 +1,6 @@
 ¡Hola!
 
-Esta es la evaluación final del segundo módulo del curso de Adalab. Yo soy Silvia Díaz Molina, alumna de la generación O. 
+Esta es la evaluación final del segundo módulo del curso de Adalab (Generación O).
 
 El ejercicio consiste en desarrollar una aplicación web de búsqueda de series de anime, que nos permita des/marcar las series como favoritas y guardarlas en local storage. Todo ello para asentar los conocimientos básicos de JavaScript adquiridos en el último mes.
 
