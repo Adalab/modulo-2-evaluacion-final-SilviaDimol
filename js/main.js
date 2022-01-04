@@ -70,9 +70,18 @@ let allDataFavorites = JSON.parse(localStorage.getItem('allDataFavorites'));
 if (allDataFavorites === null) {
   allDataFavorites = [];
 }
-// Función para guardar los favoritos en el local storage
+// Función para guardar las favoritas
 function addFavorite(event) {
+  // Para que solo pille una vez la seleccionada y no la repita (creamos un find de manera primitiva)
+const selectedSerie = allDataFavorites.ev.target.dataset.id;
+let selectedFavoriteSerie;
+for (const eachFavoriteSerie of allDataFavorites) {
+  if (eachFavoriteSerie.id === selectedSerie) {
+  selectedFavoriteSerie = eachFavoriteSerie;
+  }
+  else {
   //Con push metemos un elemento en el array, y en el array vacío AllDataFavorites, lo que vamos a guardar son esos atributos que le dimos al li: id, title e image (para poder pintarlo luego). Con event.currenttarget haces referencia a la serie concreta donde estás clicando, así guardar el dat.set de eso
+  // con find index tengo que comprobar si ya está, si se sencuentra nada, si no lo añado. Esta en ejercicio de la cesta hecho por Iván.
   allDataFavorites.push(event.currentTarget.dataset);
   // Ahora, esos datos que has guardado en el array, se los mandas al local storage
   console.log(event.currentTarget);
@@ -81,6 +90,7 @@ function addFavorite(event) {
   event.currentTarget.classList.add('selectedFavoriteSerie');
   // Para que me pinte también las series favos
   paintFavoriteSeries(allDataFavorites);
+}
 }
 
 paintFavoriteSeries(allDataFavorites);
@@ -98,21 +108,13 @@ function paintFavoriteSeries(allDataFavorites) {
     favoriteSerie.appendChild(favoriteSerieTitle);
     favoriteSerie.appendChild(favoriteSerieImage);
     // Aqui le añado una clase al li para poder darle estilos en css
-    serie.classList.add('favoriteSerie');
+    favoriteSerie.classList.add('favoriteSerie');
    }
   }
 
+  
 // BOTÓN BORRAR (borrar búsqueda)
-resetButton.addEventListener('click', deleteInput);
-function deleteInput() {
+resetButton.addEventListener('click', deleteSearch);
+function deleteSearch() {
   location.reload();
-}
-
-// BOTÓN PAPELERA (borrar favoritas)
-resetFavoritesButton.addEventListener('click', deleteFavorites);
-function deleteFavorites() {
-  localStorage.setItem('allDataFavorites', '[]');
-  allDataFavorites = [];
-  favoriteSeriesList.innerHTML ='';
-
 }
