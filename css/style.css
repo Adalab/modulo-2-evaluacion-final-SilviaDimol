@@ -21,6 +21,7 @@ main {
 }
 
 .favoriteSeriesContainer {
+  width: 500px;
   border-color: fuchsia;
   border-style: solid;
   box-sizing: border-box;
@@ -38,6 +39,7 @@ main {
 }
 
 .ResultsContainer {
+  width: 500px;
   border-color: turquoise;
   border-style: solid;
   border-radius: 10px;
@@ -91,3 +93,12 @@ button {
   border-width: 10px;
 }
 
+.seriesList {
+    color: turquoise;
+    list-style: none;
+}
+
+.favoriteSeriesList {
+    color: fuchsia;
+    list-style: none;
+}
