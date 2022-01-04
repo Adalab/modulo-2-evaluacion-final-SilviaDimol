@@ -10,7 +10,7 @@
 
   <body>
     <header class="header">
-      <h1 class="mainTitle">Buscador de series de anime</h1>
+      <h1 class="headerTitle">Buscador de series de anime</h1>
       <form class="js-form" method="GET">
         <input
           class="js-formInput formInput"
@@ -20,17 +20,20 @@
           placeholder="Nombre de la serie"
         />
         <button class="js-searchButton searchButton">Buscar</button>
-        <button class="js-resetButton resetButton">Borrar</button>
+        <button class="js-resetButton resetButton">Borrar búsqueda</button>
+        <button class="js-resetFavoritesButton resetFavoritesButton">
+          Borrar favoritas
+        </button>
       </form>
     </header>
     <main class="main">
-      <section class="favoriteSeriesContainer">
-        <h2 class="js-favoritesTitle">Series favoritas</h2>
-        <ul class="js-favoriteSeriesList seriesList"></ul>
-      </section>
       <section class="ResultsContainer">
         <h2 class="js-resultsTitle resultsTitle">Resultados</h2>
         <ul class="js-seriesList favoriteSeriesList"></ul>
+      </section>
+      <section class="favoriteSeriesContainer">
+        <h2 class="js-favoritesTitle favoriteSeriesTitle">Series favoritas</h2>
+        <ul class="js-favoriteSeriesList seriesList"></ul>
       </section>
     </main>
     <script type="text/javascript" src="./js/main.js"></script>

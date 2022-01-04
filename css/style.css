@@ -1,83 +1,90 @@
 body {
-    background-color: black;
-    padding: 100px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  background-color: black;
+  padding: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.headerTitle {
+  color: turquoise;
 }
 
 main {
-    background-color: black;
-    padding: 100px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: left;
-
-}
-
-.mainTitle {
-    color: turquoise;
+  background-color: black;
+  padding: 100px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: left;
 }
 
 .favoriteSeriesContainer {
-    border-color: pink;
-    border-style: solid;
-    border-radius: 10px;
-    background-color: black;
-    padding: 100px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
+  border-color: fuchsia;
+  border-style: solid;
+  border-radius: 10px;
+  border-width: 3px;
+  background-color: black;
+  padding: 100px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.favoriteSeriesTitle {
+  color: fuchsia;
 }
 
 .ResultsContainer {
-    border-color: white;
-    border-style: solid;
-    border-radius: 10px;
-    background-color: black;
-    padding: 100px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-
+  border-color: turquoise;
+  border-style: solid;
+  border-radius: 10px;
+  border-width: 3px;
+  background-color: black;
+  padding: 100px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
 
-.searchButton {
-    color: white;
-    background-color: turquoise;
-    border-radius: 10%;
-    border-style: solid;
-    border-color: turquoise;
+.resultsTitle {
+  color: turquoise;
 }
 
-.resetButton {
-    color: white;
-    background-color: turquoise;
-    border-radius: 10%;
-    border-style: solid;
-    border-color: turquoise;
+button {
+  color: white;
+  background-color: turquoise;
+  border-radius: 10%;
+  border-style: solid;
+  border-color: turquoise;
 }
 
 .formInput {
-    background-color: black;
-    color: white;
-    border-radius: 10%;
-    border-style: solid;
-    border-color: turquoise;
-}
-
-.resetFavoritesButton {
-    background-color: black;
-    font-size: 30px;
-    border-color: black;
-}
-
-h2 {
-    color: pink;
+  background-color: black;
+  color: white;
+  border-radius: 10%;
+  border-width: 3px;
+  border-style: solid;
+  border-color: turquoise;
 }
 
 .serie {
-    color: white;
+  border-color: turquoise;
+  border-style: solid;
+  border-radius: 10px;
+  border-width: 3px;
+}
+
+.selectedFavoriteSerie {
+  border-color: turquoise;
+  border-style: solid;
+  border-radius: 10px;
+  border-width: 10px;
+}
+.favoriteSerie {
+  border-color: fuchsia;
+  border-style: solid;
+  border-radius: 10px;
+  border-width: 10px;
 }
