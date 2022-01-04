@@ -23,6 +23,7 @@ main {
 .favoriteSeriesContainer {
   border-color: fuchsia;
   border-style: solid;
+  box-sizing: border-box;
   border-radius: 10px;
   border-width: 3px;
   background-color: black;
@@ -40,6 +41,7 @@ main {
   border-color: turquoise;
   border-style: solid;
   border-radius: 10px;
+  box-sizing: border-box;
   border-width: 3px;
   background-color: black;
   padding: 100px;
@@ -88,3 +90,4 @@ button {
   border-radius: 10px;
   border-width: 10px;
 }
+
