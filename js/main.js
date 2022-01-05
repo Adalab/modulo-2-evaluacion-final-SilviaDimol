@@ -13,6 +13,17 @@ const resetFavoritesButton = document.querySelector(".js-resetFavoritesButton");
 const seriesList = document.querySelector(".js-seriesList");
 // Donde se pintan las favoritas
 const favoriteSeriesList = document.querySelector(".js-favoriteSeriesList");
+ 
+const favoriteButton = document.querySelector(".js-favoritesButton");
+
+favoriteButton.addEventListener("click", showFavorites);
+
+function showFavorites(event) {
+  event.preventDefault();
+  console.log(allDataFavorites.length);
+
+}
+
 
 // VARIABLES GLOBALES
 let allData;
@@ -44,15 +55,24 @@ function paintSeries(seriesData) {
       const serie = document.createElement("li");
       const serieTitle = document.createTextNode(eachSerie.title);
       const serieImage = document.createElement("img");
+      const serieScore = document.createElement("p");
+      if (eachSerie.score >= 7) {
+          const recommendedSerie = document.createElement("p");
+          const textRecommendedSerie = document.createTextNode('Recomendada');
+          recommendedSerie.appendChild(textRecommendedSerie);
+          serie.appendChild(recommendedSerie);
+      }
       serieImage.setAttribute("src", eachSerie.image_url);
       // Ahora le digo qué lugar quiero que ocupen en el html (hijos de)
       seriesList.appendChild(serie);
       serie.appendChild(serieTitle);
       serie.appendChild(serieImage);
+      serie.appendChild(serieScore);
       // Añadir atributos al li para guardarlo en el local storage
       serie.setAttribute("data-id", eachSerie.mal_id);
       serie.setAttribute("data-title", eachSerie.title);
       serie.setAttribute("data-image", eachSerie.image_url);
+      serie.setAttribute("data-score", eachSerie.score);
       // Aqui le añado una clase al li para poder darle estilos en css
       serie.classList.add("serie");
       // Evento para mandar series al local storage
