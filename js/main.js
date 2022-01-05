@@ -31,7 +31,7 @@ function apiRequest(event) {
     });
 }
 
-// PINTAR LAS SERIES
+// PINTAR LAS SERIES // 
 function paintSeries(seriesData) {
   //Para limpiar y que no se sume una búsqueda a otra
   seriesList.innerHTML = "";
